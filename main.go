@@ -6,10 +6,16 @@ import (
 )
 
 func main() {
-    arg := os.Args[1]
+	arg := os.Args[1]
 
-    if arg == "helloworld" {
-        fmt.Print("Hello, World!")
-        helloworld()
-    }
+	switch arg {
+	case "helloworld":
+		helloworld()
+	case "task":
+        t := New(func() {
+            fmt.Println("Hello, World!")
+        })
+        t.Start()
+        t.Wait()
+	}
 }
