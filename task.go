@@ -26,3 +26,11 @@ func (t *Task) Start() {
 func (t *Task) Wait() {
 	<-t.awaiter
 }
+
+// Creates a new task with a single input argument.
+func NewWithInput[T any](f func(T), input T) *Task {
+	fun := func() {
+		f(input)
+	}
+	return New(fun)
+}
