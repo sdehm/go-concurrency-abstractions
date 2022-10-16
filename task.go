@@ -34,3 +34,26 @@ func NewWithInput[T any](f func(T), input T) *Task {
 	}
 	return New(fun)
 }
+
+// Task struct that stores a single result value.
+type TaskWithResult[T any] struct {
+	Task
+	result T
+}
+
+// Creates a new task that stores a single result value.
+func NewWithResult[T any](f func() T) *TaskWithResult[T] {
+	t := &TaskWithResult[T]{
+		Task: *New(nil),
+	}
+	t.f = func() {
+		t.result = f()
+	}
+	return t
+}
+
+// Returns the result value after waiting for the task to finish.
+func (t *TaskWithResult[T]) GetResult() T {
+	t.Wait()
+	return t.result
+}

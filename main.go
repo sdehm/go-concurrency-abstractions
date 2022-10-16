@@ -38,5 +38,22 @@ func main() {
 		}, "Hello with generics!")
 		t.Start()
 		t.Wait()
+	case "task_output_generic":
+		t := NewWithResult(func() string {
+			return "Hello with generic output!"
+		})
+		t.Start()
+		fmt.Println(t.GetResult())
+    case "task_nested":
+        t := New(func() {
+            fmt.Println("Hello from the first task!")
+            t := New(func() {
+                fmt.Println("Hello from the second task!")
+            })
+            t.Start()
+            t.Wait()
+        })
+        t.Start()
+        t.Wait()
 	}
 }
