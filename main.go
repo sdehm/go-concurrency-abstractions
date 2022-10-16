@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/sdehm/go-concurrency-abstractions/task"
+	"github.com/sdehm/go-concurrency-abstractions/workers"
 )
 
 func main() {
@@ -59,5 +60,21 @@ func main() {
 		})
 		t.Start()
 		t.Wait()
+	// Worker examples
+	case "worker":
+		w := workers.New[string](2)
+		go func() {
+			for i := 0; i < 10; i++ {
+				i := i
+				w.Work <- func() string {
+					return fmt.Sprintf("%d", i)
+				}
+			}
+			w.DoneAdding()
+		}()
+		for r := range w.Results {
+			fmt.Println(r)
+		}
+
 	}
 }
