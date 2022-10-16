@@ -1,4 +1,4 @@
-package main
+package task
 
 // This type implements a task abstraction loosely based on .NET Tasks.
 type Task struct {
