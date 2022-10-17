@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/sdehm/go-concurrency-abstractions/actor"
 	"github.com/sdehm/go-concurrency-abstractions/task"
 	"github.com/sdehm/go-concurrency-abstractions/workers"
 )
@@ -75,5 +76,16 @@ func main() {
 		for r := range w.Results {
 			fmt.Println(r)
 		}
+    case "actor":
+        done := make(chan struct{})
+        a := actor.New(func(s string) {
+            fmt.Println(s)
+            done <- struct{}{}
+        })
+        a.Send("Hello, World!")
+        <-done
+        a.Stop()
+    default:
+        fmt.Println("Unknown example")
 	}
 }
