@@ -32,8 +32,3 @@ func New[T any](numWorkers int) *Workers[T] {
 
 	return w
 }
-
-// Signal that no more work will be sent to the workers.
-func (w *Workers[T]) DoneAdding() {
-	close(w.Work)
-}

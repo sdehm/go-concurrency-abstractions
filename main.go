@@ -70,7 +70,7 @@ func main() {
 					return fmt.Sprintf("%d", i)
 				}
 			}
-			w.DoneAdding()
+			close(w.Work)
 		}()
 		for r := range w.Results {
 			fmt.Println(r)
