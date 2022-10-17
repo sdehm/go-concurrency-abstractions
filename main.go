@@ -83,6 +83,7 @@ func main() {
             done <- struct{}{}
         })
         a.Send("Hello, World!")
+        a.Send("Hello again, World!")
         <-done
         a.Stop()
     default:
