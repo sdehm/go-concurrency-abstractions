@@ -75,6 +75,5 @@ func main() {
 		for r := range w.Results {
 			fmt.Println(r)
 		}
-
 	}
 }

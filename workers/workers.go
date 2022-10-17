@@ -14,6 +14,7 @@ func New[T any](numWorkers int) *Workers[T] {
 		Results: make(chan T),
 		wg: sync.WaitGroup{},
 	}
+
 	for i := 0; i < numWorkers; i++ {
 		w.wg.Add(1)
 		go func() {
