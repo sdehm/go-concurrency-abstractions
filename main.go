@@ -10,9 +10,7 @@ import (
 )
 
 func main() {
-	arg := os.Args[1]
-
-	switch arg {
+	switch os.Args[1] {
 	// Helloworld example
 	case "helloworld":
 		helloworld()
