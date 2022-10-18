@@ -1,6 +1,8 @@
 package actor
 
-import "sync"
+import (
+	"sync"
+)
 
 type Actor[T any] struct {
 	messages chan T
@@ -8,6 +10,7 @@ type Actor[T any] struct {
 	wg sync.WaitGroup
 }
 
+// Creates a new actor with the given handler function.
 func New[T any](handler func(T)) *Actor[T] {
 	a := &Actor[T]{
 		messages: make(chan T),
@@ -16,22 +19,22 @@ func New[T any](handler func(T)) *Actor[T] {
 	go func() {
 		for m := range a.messages {
 			a.handler(m)
+			a.wg.Done()
 		}
 	}()
 	return a
 }
 
+// Sends a message to the actor.
 func (a *Actor[T]) Send(m T) {
 	a.wg.Add(1)
 	go func() {
 		a.messages <- m
-		a.wg.Done()
 	}()
 }
 
+// Waits for all messages to be finished and closes the channel.
 func (a *Actor[T]) Stop() {
-	go func() {
-		a.wg.Wait()
-		close(a.messages)
-	}()
+	a.wg.Wait()
+	close(a.messages)
 }

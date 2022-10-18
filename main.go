@@ -76,17 +76,36 @@ func main() {
 		for r := range w.Results {
 			fmt.Println(r)
 		}
-    case "actor":
-        done := make(chan struct{})
-        a := actor.New(func(s string) {
-            fmt.Println(s)
-            done <- struct{}{}
-        })
-        a.Send("Hello, World!")
-        a.Send("Hello again, World!")
-        <-done
-        a.Stop()
-    default:
-        fmt.Println("Unknown example")
+		// Actor examples
+	case "actor":
+		a := actor.New(func(s string) {
+			fmt.Println(s)
+		})
+		a.Send("Hello, World!")
+		a.Send("Hello again, World!")
+		a.Stop()
+	case "actor_printer":
+		p := actor.NewPrinter()
+		p.Print("Hello, World!")
+		p.Print("Hello again, World!")
+		p.Stop()
+	case "actor_chatroom":
+		// create chat room
+		chatRoom := actor.NewChatRoom()
+
+		// create clients
+		alice := actor.NewClient("Alice", chatRoom)
+		bob := actor.NewClient("Bob", chatRoom)
+
+		// send messages
+		alice.Send("Hello, Bob!")
+		bob.Send("Hello, Alice!")
+
+		// stop actors and wait for them to finish
+		alice.Stop()
+		bob.Stop()
+		chatRoom.Stop()
+	default:
+		fmt.Println("Unknown example")
 	}
 }
