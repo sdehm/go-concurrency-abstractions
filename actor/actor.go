@@ -6,15 +6,15 @@ import (
 
 type Actor[T any] struct {
 	messages chan T
-	handler	func(T)
-	wg sync.WaitGroup
+	handler  func(T)
+	wg       sync.WaitGroup
 }
 
 // Creates a new actor with the given handler function.
 func New[T any](handler func(T)) *Actor[T] {
 	a := &Actor[T]{
 		messages: make(chan T),
-		handler: handler,
+		handler:  handler,
 	}
 	go func() {
 		for m := range a.messages {

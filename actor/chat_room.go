@@ -30,7 +30,7 @@ func NewClient(name string, room *ChatRoom) *Client {
 	c.Actor = New(func(t string) {
 		m := message{
 			sender: c,
-			text: t,
+			text:   t,
 		}
 		room.Send(m)
 	})
@@ -39,5 +39,5 @@ func NewClient(name string, room *ChatRoom) *Client {
 
 type message struct {
 	sender *Client
-	text string
+	text   string
 }
