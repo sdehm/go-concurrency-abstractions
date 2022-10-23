@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/sdehm/go-concurrency-abstractions/actor"
+	"github.com/sdehm/go-concurrency-abstractions/events"
 	"github.com/sdehm/go-concurrency-abstractions/task"
 	"github.com/sdehm/go-concurrency-abstractions/workers"
 )
@@ -103,6 +104,27 @@ func main() {
 		alice.Stop()
 		bob.Stop()
 		chatRoom.Stop()
+    // Events examples
+    case "pubsub":
+        p := events.NewPublisher[string]()
+        done1 := make(chan struct{})
+        done2 := make(chan struct{})
+        s1 := events.NewSubscriber(p, func(s string) {
+            fmt.Println("Subscriber 1:", s)
+            done1 <- struct{}{}
+        })
+        events.NewSubscriber(p, func(s string) {
+            fmt.Println("Subscriber 2:", s)
+            done2 <- struct{}{}
+        })
+        p.Publish("Hello, World!")
+        <-done1
+        <-done2
+        p.Wait()
+        s1.Unsubscribe()
+        p.Publish("Hello, World!")
+        <-done2
+        p.Wait()
 	default:
 		fmt.Println("Unknown example")
 	}
