@@ -122,7 +122,7 @@ func main() {
 		<-done2
 		p.Wait()
 		s1.Unsubscribe()
-		p.Publish("Hello, World!")
+		p.Publish("Hello, again World!")
 		<-done2
 		p.Wait()
 	default:
