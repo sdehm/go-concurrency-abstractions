@@ -6,16 +6,16 @@ type Publisher[T any] struct {
 	sync.Mutex
 	targets map[int]chan T
 	lastID  int
-	wg 		sync.WaitGroup
+	wg      sync.WaitGroup
 }
 
 func NewPublisher[T any]() *Publisher[T] {
-	return &Publisher[T] {
+	return &Publisher[T]{
 		targets: make(map[int]chan T),
 	}
 }
 
-func (p *Publisher[T]) Publish (m T) {
+func (p *Publisher[T]) Publish(m T) {
 	p.Lock()
 	defer p.Unlock()
 
@@ -59,17 +59,17 @@ func (p *Publisher[T]) unsubscribe(id int) {
 }
 
 type Subscriber[T any] struct {
-	callback func(T)
-	id 		 int
-	channel chan T
+	callback  func(T)
+	id        int
+	channel   chan T
 	publisher *Publisher[T]
 }
 
 func NewSubscriber[T any](p *Publisher[T], cb func(T)) *Subscriber[T] {
 	s := &Subscriber[T]{
 		publisher: p,
-		channel: make(chan T),
-		callback: cb,
+		channel:   make(chan T),
+		callback:  cb,
 	}
 	s.id = p.subscribe(s)
 	go func() {
