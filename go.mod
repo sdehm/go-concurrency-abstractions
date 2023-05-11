@@ -1,3 +1,3 @@
 module github.com/sdehm/go-concurrency-abstractions
 
-go 1.18
+go 1.20
